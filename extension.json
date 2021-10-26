@@ -27,7 +27,7 @@
 			],
       			"scripts": [
 				"dependencies/papaparse.min.js",
-				"dist/jszip.min.js",
+				"dependencies/jszip.min.js",
 				"dist/ui.min.js",
 				"dist/shared.min.js",
 				"dist/editor.min.js"
