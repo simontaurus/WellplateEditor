@@ -43,6 +43,6 @@
 		"WellplateEditor": "includes/WellplateEditor.php"
 	},
 	"Hooks": {
-		"BeforePageDisplay": "LabWiki::onBeforePageDisplay"
+		"BeforePageDisplay": "WellplateEditor::onBeforePageDisplay"
 	}
 }
