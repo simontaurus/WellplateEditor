@@ -1,0 +1,48 @@
+{
+   "name": "WellplateEditor",
+	"version": "0.0.1",
+	"author": [
+		"Simon Stier"
+	],
+	"url": "https://github.com/simontaurus/WellplateEditor",
+	"descriptionmsg": "wellplate-editor-desc",
+	"namemsg": "wellplate-editor-name",
+	"license-name": "GPL v3",
+	"type": "semantic",
+	"requires": {
+		"MediaWiki": ">= 1.31"
+	},
+	"MessagesDirs": {
+		"WellplateEditor": [
+			"i18n"
+		]
+	},
+	"manifest_version": 1,
+	"ResourceModules": {
+		"ext.WellplateEditor.editor": {
+			"styles": [
+				"dist/ui-styles.css",
+        "dist/editor-styles.css",
+        "dist/shared-styles.css
+			],
+      "scripts":  [
+        "dependencies/papaparse.min.js",
+        "dist/jszip.min.js",
+        "dist/ui.min.js",
+        "dist/shared.min.js",
+        "dist/editor.min.js"
+      ],
+			"position": "bottom"
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "resources",
+		"remoteExtPath": "WellplateEditor/resources"
+	},
+	"AutoloadClasses": {
+		"WellplateEditor": "includes/WellplateEditor.php"
+	},
+	"Hooks": {
+		"BeforePageDisplay": "LabWiki::onBeforePageDisplay"
+	}
+}
