@@ -22,16 +22,16 @@
 		"ext.WellplateEditor.editor": {
 			"styles": [
 				"dist/ui-styles.css",
-        "dist/editor-styles.css",
-        "dist/shared-styles.css
+        			"dist/editor-styles.css",
+        			"dist/shared-styles.css
 			],
-      "scripts":  [
-        "dependencies/papaparse.min.js",
-        "dist/jszip.min.js",
-        "dist/ui.min.js",
-        "dist/shared.min.js",
-        "dist/editor.min.js"
-      ],
+      			"scripts": [
+				"dependencies/papaparse.min.js",
+				"dist/jszip.min.js",
+				"dist/ui.min.js",
+				"dist/shared.min.js",
+				"dist/editor.min.js"
+      			],
 			"position": "bottom"
 		}
 	},
