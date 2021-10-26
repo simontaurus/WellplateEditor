@@ -23,7 +23,7 @@
 			"styles": [
 				"dist/ui-styles.css",
         			"dist/editor-styles.css",
-        			"dist/shared-styles.css
+        			"dist/shared-styles.css"
 			],
       			"scripts": [
 				"dependencies/papaparse.min.js",
