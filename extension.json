@@ -30,7 +30,8 @@
 				"dependencies/jszip.min.js",
 				"dist/ui.min.js",
 				"dist/shared.min.js",
-				"dist/editor.min.js"
+				"dist/editor.min.js",
+				"wiki/ve_integration.js"
       			],
 			"position": "bottom"
 		}
