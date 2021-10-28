@@ -58,7 +58,7 @@ function integrateIntoVE() {
     toolbar.addItems( [ myToolGroup ] );
 }
 
-mw.hook( 've.activationComplete' ).add( integrateIntoVE );
+//mw.hook( 've.activationComplete' ).add( integrateIntoVE );
 
 function VeExtensions_init_WellPlateEditor() {
 	//Create and register command
