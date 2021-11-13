@@ -10,119 +10,107 @@ mw.loader.using( 'ext.visualEditor.desktopArticleTarget.init' ).done( function()
 function VeExtensions_init() {
 mw.loader.using( [ 'ext.visualEditor.core', 'ext.visualEditor.mwtransclusion' ] )
 	.done( function() {
-		VeExtensions_init_WellPlateEditor();
+		VeExtensions_create();
 } );
 }
 
 //Initialize
-mw.hook( 've.loadModules' ).add( function( addPlugin ) {
-	addPlugin( function() {
-		return mw.loader.using( [ 'ext.visualEditor.core', 'ext.visualEditor.mwwikitext', 'ext.visualEditor.mwtransclusion' ] )
-			.then( function() {
-				VeExtensions_init_WellPlateEditor();
-			} );
+//mw.hook( 've.loadModules' ).add( function( addPlugin ) {
+//	addPlugin( function() {
+//		return mw.loader.using( [ 'ext.visualEditor.core', 'ext.visualEditor.mwwikitext', 'ext.visualEditor.mwtransclusion' ] )
+//			.then( function() {
+//				//VeExtensions_init_WellPlateEditor();
+//			} );
+//	} );
+//} );
+
+
+var tool_groups = [{name: 'labnote', label: 'LabNote'}];
+var template_tools = [
+    {
+	group: 'labnote', //built in: insert
+        custom_group: true, 
+        title: 'Wellplate',
+	icon: 'table', //https://doc.wikimedia.org/oojs-ui/master/demos/?page=icons&theme=wikimediaui&direction=ltr&platform=desktop
+	name: 'wellplate_viewer', 
+	//command_name: 'eln_viewer_wellplate',
+        sequence: '{W}',
+        shortcut: 'ctrl+alt+w',
+	template: { target: {href: 'Template:ELN/Viewer/Wellplate', wt: 'ELN/Viewer/Wellplate'}, params: {'file_name': {wt: 'wellplate_01'}}} 
+    }
+];
+
+
+mw.loader.using( [ 'ext.visualEditor.mediawiki' ] ).then( function() {
+	function addGroup( target ) {
+                tool_groups.forEach(function (tool_group) {
+		target.static.toolbarGroups.push( {
+			name: tool_group.name,
+			label: tool_group.label,
+			type: 'list',
+			indicator: 'down',
+			include: [ { group: tool_group.name } ],
+		} );
+		} );
+	}
+	for ( var n in ve.init.mw.targetFactory.registry ) {
+		addGroup( ve.init.mw.targetFactory.lookup( n ) );
+	}
+	ve.init.mw.targetFactory.on( 'register', function ( name, target ) {
+		addGroup( target );
 	} );
 } );
 
-function integrateIntoVE() {
+function VeExtensions_create() {
+    template_tools.forEach(function (template_tool) {
+        //Create and register command
+        template_tool.command_name = template_tool.name + '_command';
 
-    function Tool1() {
-        Tool1.super.apply( this, arguments );
-    }
-    OO.inheritClass( Tool1, OO.ui.Tool );
-    Tool1.static.name = 'mytool1';
-    Tool1.static.title = 'Tool 1';
-    Tool1.prototype.onUpdateState = function () {};
-    Tool1.prototype.onSelect = function () {
-        //Implement me
-    };
-
-    function Tool2() {
-        Tool2.super.apply( this, arguments );
-    }
-    OO.inheritClass( Tool2, OO.ui.Tool );
-    Tool2.static.name = 'mytool2';
-    Tool2.static.title = 'Tool 2';
-    Tool2.prototype.onUpdateState = function () {};
-    Tool2.prototype.onSelect = function () {
-        //Implement me
-    };
-
-    toolbar = ve.init.target.getToolbar();
-    myToolGroup = new OO.ui.ListToolGroup( toolbar, {
-        title: 'My tools',
-        include: [ 'mytool1', 'mytool2' ]
-    } );
-    ve.ui.toolFactory.register( Tool1 );
-    ve.ui.toolFactory.register( Tool2 );
-    toolbar.addItems( [ myToolGroup ] );
-}
-
-//mw.hook( 've.activationComplete' ).add( integrateIntoVE );
-
-function VeExtensions_init_WellPlateEditor() {
-	//Create and register command
-	var custom_template = [ {
-		type: 'mwTransclusionBlock',
-		attributes: {
-			mw: {
-				parts: [ {
-					template: {
-						target: {
-							href: 'Template:ELN/Viewer/Wellplate',
-							wt: 'ELN/Viewer/Wellplate'
-						},
-						params: {
-							'file_name': {
-								wt: 'wellplate_01'
-							}
-						}
-					}
-				} ]
-			}
-		}
-	}, {
-		type: '/mwTransclusionBlock'
-	} ];
+	var custom_template = [ {type: 'mwTransclusionBlock', attributes: {mw: {parts: [ {template: template_tool.template} ]}}}, {type: '/mwTransclusionBlock'} ];
 
 	ve.ui.commandRegistry.register(
-		new ve.ui.Command( 'eln_viewer_wellplate', 'content', 'insert', {
+		new ve.ui.Command( template_tool.command_name, 'content', 'insert', {
 			args: [ custom_template, false, true ],
 			supportedSelections: [ 'linear' ]
 		} )
 	);
 
-	//Create and register wikitext command
-	if ( ve.ui.wikitextCommandRegistry ) {
-		ve.ui.wikitextCommandRegistry.register(
-			new ve.ui.Command( 'eln_viewer_wellplate', 'mwWikitext', 'wrapSelection', {
-				args: [ '{{ELN/Viewer/Wellplate|', '}}', 'file_name' ],
-				supportedSelections: [ 'linear' ]
-			} )
-		);
-	}
+	//Create and register wikitext command (only for source editor
+	//if ( ve.ui.wikitextCommandRegistry ) {
+	//	ve.ui.wikitextCommandRegistry.register(
+	//		new ve.ui.Command( 'eln_viewer_wellplate', 'mwWikitext', 'wrapSelection', {
+	//			args: [ '{{ELN/Viewer/Wellplate|', '}}', 'file_name' ],
+	//			supportedSelections: [ 'linear' ]
+	//		} )
+	//	);
+	//}
 
 	//Create and register tool
-	function WellPlateEditor() {
-		WellPlateEditor.parent.apply( this, arguments );
+	function CustomTool() {
+		CustomTool.parent.apply( this, arguments );
 	}
-	OO.inheritClass( WellPlateEditor, ve.ui.MWTransclusionDialogTool );
+	OO.inheritClass( CustomTool, ve.ui.MWTransclusionDialogTool );
 
-	WellPlateEditor.static.name = 'wellplate_viewer';
-	WellPlateEditor.static.group = 'insert';
-	WellPlateEditor.static.title = 'Wellplate';
-	WellPlateEditor.static.commandName = 'eln_viewer_wellplate';
-	ve.ui.toolFactory.register( WellPlateEditor );
-	
+	CustomTool.static.name =  template_tool.name;
+	CustomTool.static.group =  template_tool.group;
+        if (template_tool.custom_group){
+		CustomTool.static.autoAddToCatchall = false;
+		CustomTool.static.autoAddToGroup = true;
+	}
+	CustomTool.static.title =  template_tool.title;
+	CustomTool.static.icon =  template_tool.icon;
+	CustomTool.static.commandName = template_tool.command_name;
+	ve.ui.toolFactory.register( CustomTool );
+	console.log(template_tool.shortcut.replace('ctrl','cmd'));
 	//Register keyboard shortcut
-	ve.ui.triggerRegistry.register('eln_viewer_wellplate', {
-        mac: new ve.ui.Trigger('cmd+shift+w'),
-        pc: new ve.ui.Trigger('ctrl+shift+w')
-    });
+	ve.ui.triggerRegistry.register(template_tool.command_name, {
+        	mac: new ve.ui.Trigger(template_tool.shortcut.replace('ctrl','cmd')),
+        	pc: new ve.ui.Trigger(template_tool.shortcut)
+        });
    
-    //Register input sequence
-	ve.ui.sequenceRegistry.register(
-		new ve.ui.Sequence('wellplate_viewer_sequence', 'wellplate_viewer', '{W}', 3)
-	);
-
+        //Register input sequence
+        if (template_tool.sequence != null){
+		ve.ui.sequenceRegistry.register(new ve.ui.Sequence(template_tool.name + '_sequence', template_tool.command_name, template_tool.sequence, template_tool.sequence.length));
+        }
+    });
 }
