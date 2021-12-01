@@ -14,16 +14,6 @@ mw.loader.using( [ 'ext.visualEditor.core', 'ext.visualEditor.mwtransclusion' ] 
 } );
 }
 
-//Initialize
-//mw.hook( 've.loadModules' ).add( function( addPlugin ) {
-//	addPlugin( function() {
-//		return mw.loader.using( [ 'ext.visualEditor.core', 'ext.visualEditor.mwwikitext', 'ext.visualEditor.mwtransclusion' ] )
-//			.then( function() {
-//				//VeExtensions_init_WellPlateEditor();
-//			} );
-//	} );
-//} );
-
 
 var tool_groups = [{name: 'labnote', label: 'LabNote'}];
 var template_tools = [
@@ -33,36 +23,40 @@ var template_tools = [
 		title: 'Drawing',
 		icon: 'edit', //https://doc.wikimedia.org/oojs-ui/master/demos/?page=icons&theme=wikimediaui&direction=ltr&platform=desktop
 		name: 'drawio_editor',
+		dialog: true,
 		sequence: '{D}',
 		shortcut: 'ctrl+alt+d',
 		template: { target: {href: 'Template:ELN/Editor/DrawIO', wt: 'ELN/Editor/DrawIO'}, params: {'file_name': {wt: 'drawing_01'}}} 
 	},
 	{
-		group: 'labnote', //built in: insert
+		group: 'labnote',
 		custom_group: true, 
 		title: 'Wellplate',
 		icon: 'table',
 		name: 'wellplate_viewer', 
+		dialog: true,
 		sequence: '{W}',
 		shortcut: 'ctrl+alt+w',
 		template: { target: {href: 'Template:ELN/Viewer/Wellplate', wt: 'ELN/Viewer/Wellplate'}, params: {'file_name': {wt: 'wellplate_01'}}} 
 	},
 	{
-		group: 'labnote', //built in: insert
+		group: 'labnote',
 		custom_group: true, 
 		title: 'ChemViewer',
 		icon: 'chem',
 		name: 'kekule_viewer', 
+		dialog: true,
 		sequence: '{V}',
 		shortcut: 'ctrl+alt+v',
 		template: { target: {href: 'Template:ELN/Viewer/Kekule', wt: 'ELN/Viewer/Kekule'}} 
 	},
 	{
-		group: 'labnote', //built in: insert
+		group: 'labnote',
 		custom_group: true, 
 		title: 'ChemEditor',
 		icon: 'chem',
 		name: 'kekule_editor', 
+		dialog: true,
 		sequence: '{C}',
 		shortcut: 'ctrl+alt+c',
 		template: { target: {href: 'Template:ELN/Editor/Kekule', wt: 'ELN/Editor/Kekule'}} 
@@ -97,12 +91,34 @@ function VeExtensions_create() {
 
 	var custom_template = [ {type: 'mwTransclusionBlock', attributes: {mw: {parts: [ {template: template_tool.template} ]}}}, {type: '/mwTransclusionBlock'} ];
 
-	ve.ui.commandRegistry.register(
-		new ve.ui.Command( template_tool.command_name, 'content', 'insert', {
-			args: [ custom_template, false, true ],
-			supportedSelections: [ 'linear' ]
-		} )
-	);
+	if (template_tool.dialog) {
+		//Insert template and open dialog
+		function InsertAndOpenCommand( name, options ) {
+			InsertAndOpenCommand.parent.call( this, name, null, null, options );
+		}
+		OO.inheritClass( InsertAndOpenCommand, ve.ui.Command );   
+		InsertAndOpenCommand.prototype.execute = function( surface, args ) {
+			args = args || this.args;
+			surface.getModel().getFragment().collapseToEnd().insertContent( args[0], args[1] ).select();
+			surface.execute( 'window', 'open', 'transclusion' );
+			return true;
+		};
+		ve.ui.commandRegistry.register(
+			new InsertAndOpenCommand( template_tool.command_name, {
+				args: [ custom_template, false ],
+				supportedSelections: [ 'linear' ]
+			} )
+		);
+	}
+	else {    
+		//Insert template
+		ve.ui.commandRegistry.register(
+			new ve.ui.Command( template_tool.command_name, 'content', 'insert', {
+				args: [ custom_template, false, true ],
+				supportedSelections: [ 'linear' ]
+			} )
+		);
+	}
 
 	//Create and register wikitext command (only for source editor
 	//if ( ve.ui.wikitextCommandRegistry ) {
