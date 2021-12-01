@@ -27,17 +27,46 @@ mw.loader.using( [ 'ext.visualEditor.core', 'ext.visualEditor.mwtransclusion' ] 
 
 var tool_groups = [{name: 'labnote', label: 'LabNote'}];
 var template_tools = [
-    {
-	group: 'labnote', //built in: insert
-        custom_group: true, 
-        title: 'Wellplate',
-	icon: 'table', //https://doc.wikimedia.org/oojs-ui/master/demos/?page=icons&theme=wikimediaui&direction=ltr&platform=desktop
-	name: 'wellplate_viewer', 
-	//command_name: 'eln_viewer_wellplate',
-        sequence: '{W}',
-        shortcut: 'ctrl+alt+w',
-	template: { target: {href: 'Template:ELN/Viewer/Wellplate', wt: 'ELN/Viewer/Wellplate'}, params: {'file_name': {wt: 'wellplate_01'}}} 
-    }
+	{
+		group: 'insert', //built in: insert
+		custom_group: false, 
+		title: 'Drawing',
+		icon: 'edit', //https://doc.wikimedia.org/oojs-ui/master/demos/?page=icons&theme=wikimediaui&direction=ltr&platform=desktop
+		name: 'drawio_editor',
+		sequence: '{D}',
+		shortcut: 'ctrl+alt+d',
+		template: { target: {href: 'Template:ELN/Editor/DrawIO', wt: 'ELN/Editor/DrawIO'}, params: {'file_name': {wt: 'drawing_01'}}} 
+	},
+	{
+		group: 'labnote', //built in: insert
+		custom_group: true, 
+		title: 'Wellplate',
+		icon: 'table',
+		name: 'wellplate_viewer', 
+		sequence: '{W}',
+		shortcut: 'ctrl+alt+w',
+		template: { target: {href: 'Template:ELN/Viewer/Wellplate', wt: 'ELN/Viewer/Wellplate'}, params: {'file_name': {wt: 'wellplate_01'}}} 
+	},
+	{
+		group: 'labnote', //built in: insert
+		custom_group: true, 
+		title: 'ChemViewer',
+		icon: 'chem',
+		name: 'kekule_viewer', 
+		sequence: '{V}',
+		shortcut: 'ctrl+alt+v',
+		template: { target: {href: 'Template:ELN/Viewer/Kekule', wt: 'ELN/Viewer/Kekule'}} 
+	},
+	{
+		group: 'labnote', //built in: insert
+		custom_group: true, 
+		title: 'ChemEditor',
+		icon: 'chem',
+		name: 'kekule_editor', 
+		sequence: '{C}',
+		shortcut: 'ctrl+alt+c',
+		template: { target: {href: 'Template:ELN/Editor/Kekule', wt: 'ELN/Editor/Kekule'}} 
+	}
 ];
 
 
@@ -101,7 +130,7 @@ function VeExtensions_create() {
 	CustomTool.static.icon =  template_tool.icon;
 	CustomTool.static.commandName = template_tool.command_name;
 	ve.ui.toolFactory.register( CustomTool );
-	console.log(template_tool.shortcut.replace('ctrl','cmd'));
+
 	//Register keyboard shortcut
 	ve.ui.triggerRegistry.register(template_tool.command_name, {
         	mac: new ve.ui.Trigger(template_tool.shortcut.replace('ctrl','cmd')),
