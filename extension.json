@@ -26,14 +26,16 @@
 			"styles": [
 				"dist/ui-styles.css",
         			"dist/editor-styles.css",
-        			"dist/shared-styles.css"
+        			"dist/shared-styles.css",
+				"dist/analyzer-styles.css"
 			],
       			"packageFiles": [
 				"dependencies/papaparse.min.js",
 				"dependencies/jszip.min.js",
 				"dist/ui.min.js",
 				"dist/shared.min.js",
-				"dist/editor.min.js"
+				"dist/editor.min.js",
+				"dist/analyzer.min.js"
       			]
 		}
 	},
