@@ -1,14 +1,15 @@
 {
-   "name": "WellplateEditor",
-	"version": "0.0.1",
+   	"name": "WellplateEditor",
+	"version": "0.0.2",
 	"author": [
-		"Simon Stier"
+		"[https://github.com/simontaurus Simon Stier]",
+		"[https://github.com/vindelorme creator of PlateEditor]"
 	],
 	"url": "https://github.com/simontaurus/WellplateEditor",
 	"descriptionmsg": "wellplate-editor-desc",
 	"namemsg": "wellplate-editor-name",
-	"license-name": "GPL v3",
-	"type": "semantic",
+	"license-name": "AGPL-3.0",
+	"type": "editor",
 	"requires": {
 		"MediaWiki": ">= 1.31"
 	},
@@ -17,28 +18,24 @@
 			"i18n"
 		]
 	},
-	"manifest_version": 1,
+	"manifest_version": 2,
 	"ResourceModules": {
-		"ext.WellplateEditor.editor": {
+		"ext.WellplateEditor": {
+			"localBasePath": "resources",
+        		"remoteExtPath": "WellplateEditor/resources",
 			"styles": [
 				"dist/ui-styles.css",
         			"dist/editor-styles.css",
         			"dist/shared-styles.css"
 			],
-      			"scripts": [
+      			"packageFiles": [
 				"dependencies/papaparse.min.js",
 				"dependencies/jszip.min.js",
 				"dist/ui.min.js",
 				"dist/shared.min.js",
-				"dist/editor.min.js",
-				"wiki/ve_integration.js"
-      			],
-			"position": "bottom"
+				"dist/editor.min.js"
+      			]
 		}
-	},
-	"ResourceFileModulePaths": {
-		"localBasePath": "resources",
-		"remoteExtPath": "WellplateEditor/resources"
 	},
 	"AutoloadClasses": {
 		"WellplateEditor": "includes/WellplateEditor.php"
