@@ -2,6 +2,6 @@
 	"@metadata": {
 		"authors": ["Simon Stier"]
 	},
-	"wellplate-editor-desc": "Wellplate Editor für sciLIMS",
+	"wellplate-editor-desc": "Wellplate Editor basierend auf [https://github.com/vindelorme/PlateEditor PlateEditor]",
 	"wellplate-editor-name": "WellplateEditor"
 }
