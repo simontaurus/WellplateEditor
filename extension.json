@@ -35,7 +35,8 @@
 				"dependencies/jszip.min.js",
 				"dist/ui.min.js",
 				"dist/shared.min.js",
-				"dist/analyzer.min.js"
+				"dist/analyzer.min.js",
+				"WellplateEditor.js"
       			]
 		}
 	},
