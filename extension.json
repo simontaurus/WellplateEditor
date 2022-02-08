@@ -30,15 +30,16 @@
 				"dist/analyzer-styles.css"
 			],
       			"scripts": [
-                                "dist/editor.min.js",
 				"dependencies/papaparse.min.js",
 				"dependencies/jszip.min.js",
 				"dist/ui.min.js",
 				"dist/shared.min.js",
 				"dist/analyzer.min.js",
+				"dist/editor.min.js",
 				"WellplateEditor.js"
       			]
 		}
+
 	},
 	"AutoloadClasses": {
 		"WellplateEditor": "includes/WellplateEditor.php"
