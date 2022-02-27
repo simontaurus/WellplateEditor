@@ -1,6 +1,8 @@
+/*@nomin*/
 /* 
 DEV: MediaWiki:WellplateEditor.js
 REL: resources/WellplateEditor.js
+hint: ResourceLoader minifier does not ES6 yet, therefore skip minification  with "nomin" (see https://phabricator.wikimedia.org/T255556)
 */
 
 /*$(document).ready(function() {
@@ -61,7 +63,7 @@ $(document).ready(function() {
 	        $( deferred.resolve );
     	})
 	).done(function(){
-	    const debug = false;
+	    const debug = true;
         if (debug) console.log("WellPlateEditor init");
 	    
 	    $('.WellplateEditor').each(function() {
