@@ -429,6 +429,7 @@ function WellplateEditor_uploadBlob(blob, fileName, text, comment, debug = false
 	                api.upload(blob, param).done(function(data) {
 	                    if (debug) console.log(data.upload.filename + ' has sucessfully uploaded.');
 	                    file_exists = true;
+			    mw.hook( 'wellplateeditor.file.uploaded' ).fire({exists: false, name: fileName});
 	                    mw.notify('Saved', {
 	                        type: 'success'
 	                    });
@@ -436,6 +437,7 @@ function WellplateEditor_uploadBlob(blob, fileName, text, comment, debug = false
 	                }).fail(function(data) {
 	                    if (debug) console.log(data);
 	                    if (data === 'exists') {
+                                mw.hook( 'wellplateeditor.file.uploaded' ).fire({exists: true, name: fileName});
 	                    	mw.notify('Saved', {
 	                        	type: 'success'
 	                    	});
