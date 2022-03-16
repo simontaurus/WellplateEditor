@@ -24,6 +24,7 @@
 			"localBasePath": "resources",
         		"remoteExtPath": "WellplateEditor/resources",
 			"styles": [
+                                "WellplateEditor.css",
 				"dist/ui-styles.css",
         			"dist/editor-styles.css",
         			"dist/shared-styles.css",
