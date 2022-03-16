@@ -182,6 +182,7 @@ $(document).ready(function() {
             $(`#${editorName}-editor-buttons-${uid}`).append(save_button.$element);
             $(`#${editorName}-editor-buttons-${uid}`).append(close_button.$element);
             //$(`#${editorName}-editor-buttons-${uid}`).append(test_button.$element);
+            $(`#${editorName}-editor-buttons-${uid}`).append('<a class="external text" rel="nofollow" target="_blank" href="https://sourceforge.net/p/plateeditor/wiki/Quick%20Tour/">Tutorial</a>');
             
             const $editor = $(`
             <div id="${editorName}-editor-${uid}" class="${editorName}-editor">
