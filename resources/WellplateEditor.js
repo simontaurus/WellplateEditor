@@ -181,7 +181,7 @@ $(document).ready(function() {
             });
             $(`#${editorName}-editor-buttons-${uid}`).append(save_button.$element);
             $(`#${editorName}-editor-buttons-${uid}`).append(close_button.$element);
-            $(`#${editorName}-editor-buttons-${uid}`).append(test_button.$element);
+            //$(`#${editorName}-editor-buttons-${uid}`).append(test_button.$element);
             
             const $editor = $(`
             <div id="${editorName}-editor-${uid}" class="${editorName}-editor">
