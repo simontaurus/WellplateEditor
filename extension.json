@@ -1,6 +1,6 @@
 {
-   	"name": "WellplateEditor",
-	"version": "0.0.2",
+	"name": "WellplateEditor",
+	"version": "0.1.0",
 	"author": [
 		"[https://github.com/simontaurus Simon Stier]",
 		"[https://github.com/vindelorme creator of PlateEditor]"
@@ -22,15 +22,15 @@
 	"ResourceModules": {
 		"ext.WellplateEditor": {
 			"localBasePath": "resources",
-        		"remoteExtPath": "WellplateEditor/resources",
+			"remoteExtPath": "WellplateEditor/resources",
 			"styles": [
-                                "WellplateEditor.css",
+				"WellplateEditor.css",
 				"dist/ui-styles.css",
-        			"dist/editor-styles.css",
-        			"dist/shared-styles.css",
+				"dist/editor-styles.css",
+				"dist/shared-styles.css",
 				"dist/analyzer-styles.css"
 			],
-      			"scripts": [
+			"scripts": [
 				"WellplateEditor.js",
 				"dependencies/papaparse.min.js",
 				"dependencies/jszip.min.js",
@@ -38,9 +38,8 @@
 				"dist/shared.min.js",
 				"dist/analyzer.min.js",
 				"dist/editor.min.js"
-      			]
+			]
 		}
-
 	},
 	"AutoloadClasses": {
 		"WellplateEditor": "includes/WellplateEditor.php"

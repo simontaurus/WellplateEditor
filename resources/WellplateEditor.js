@@ -69,6 +69,8 @@ $(document).ready(function() {
 	    $('.WellplateEditor').each(function() {
 	    	const editorName = 'wellplate';
             $element = $(this);
+			const config = $element.data('config') ? $element.data('config') : {};
+
         	searchParams = new URLSearchParams(window.location.search);
         	var fileName = "";
         	var urlLoaded = false;
@@ -76,9 +78,10 @@ $(document).ready(function() {
         		fileName = searchParams.get('fileName');
         		urlLoaded = true;
         	}
-            else fileName = $element.text().split(';')[0];
+            else fileName = config.file_title ? config.file_title : $element.text().split(';')[0];
+            
             const fileType = fileName.split('.')[fileName.split('.').length - 1];
-            const fileDisplayName = fileName.replace(fileType, "");
+            const fileDisplayName = config.file_label ? config.file_label : fileName.replace(fileType, "");
             const filePageName = "File:" + fileName;
             const filePage = "/wiki/" + filePageName;
             const fileUrl = "/wiki/Special:Redirect/file/" + fileName;
@@ -242,14 +245,14 @@ $(document).ready(function() {
 		            	//WellplateEditor_downloadPromt("Wellplate.png", dataUrl.replace(/^data:image\/[^;]/, 'data:application/octet-stream'));
 		            	//WellplateEditor_uploadBlob("WellplateEditorTest.png", WellplateEditor_dataURItoBlob(dataUrl), "Created with WellPlatEditor", "");
 	                	const blob = WellplateEditor_dataURItoBlob(dataUrl);
-	                	WellplateEditor_uploadBlob(blob, fileName, "", "Created with WellPlateEditor", debug);
+	                	WellplateEditor_uploadBlob(blob, fileName, "", "Created with WellPlateEditor", debug, fileDisplayName);
 	            	};
                 }
                 if (options.format === 'svg' && options.data === 'embedded'){
                 	svg = WellplateEditor_getSvg(wpe);
         			if (debug) console.log(svg);
         			const blob = new Blob([svg], {type: 'image/svg+xml'});
-        			WellplateEditor_uploadBlob(blob, fileName, "", "Created with WellPlateEditor", debug);
+        			WellplateEditor_uploadBlob(blob, fileName, "", "Created with WellPlateEditor", debug, fileDisplayName);
                 }
                 file_exists = true;
             });
@@ -410,7 +413,7 @@ function WellplateEditor_dataURItoBlob(dataURI) {
 
 }
 
-function WellplateEditor_uploadBlob(blob, fileName, text, comment, debug = false) {
+function WellplateEditor_uploadBlob(blob, fileName, text, comment, debug = false, fileLabel) {
                 	let file = new File([blob], fileName, {
                     	type: blob.type,
                     	lastModified: new Date().getTime()
@@ -430,7 +433,7 @@ function WellplateEditor_uploadBlob(blob, fileName, text, comment, debug = false
 	                api.upload(blob, param).done(function(data) {
 	                    if (debug) console.log(data.upload.filename + ' has sucessfully uploaded.');
 	                    file_exists = true;
-			    mw.hook( 'wellplateeditor.file.uploaded' ).fire({exists: false, name: fileName});
+			    mw.hook( 'wellplateeditor.file.uploaded' ).fire({exists: false, name: fileName, label: fileLabel});
 	                    mw.notify('Saved', {
 	                        type: 'success'
 	                    });
@@ -438,7 +441,7 @@ function WellplateEditor_uploadBlob(blob, fileName, text, comment, debug = false
 	                }).fail(function(data) {
 	                    if (debug) console.log(data);
 	                    if (data === 'exists') {
-                                mw.hook( 'wellplateeditor.file.uploaded' ).fire({exists: true, name: fileName});
+                                mw.hook( 'wellplateeditor.file.uploaded' ).fire({exists: true, name: fileName, label: fileLabel});
 	                    	mw.notify('Saved', {
 	                        	type: 'success'
 	                    	});
