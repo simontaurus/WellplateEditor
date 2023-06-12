@@ -427,7 +427,7 @@ function WellplateEditor_uploadBlob(blob, fileName, text, comment, debug = false
                     	comment: comment,
                     	text: text,
                     	format: 'json',
-                    	ignorewarnings: 1
+                    	ignorewarnings: true
                 	};
 	                var api = new mw.Api();
 	                api.upload(blob, param).done(function(data) {
@@ -438,9 +438,9 @@ function WellplateEditor_uploadBlob(blob, fileName, text, comment, debug = false
 	                        type: 'success'
 	                    });
 	                    return {result: 'success', msg: 'Saved'}; 
-	                }).fail(function(data) {
+	                }).fail(function(retStatus, data) {
 	                    if (debug) console.log(data);
-	                    if (data === 'exists') {
+	                    if (data.upload.result === 'Success') {
                                 mw.hook( 'wellplateeditor.file.uploaded' ).fire({exists: true, name: fileName, label: fileLabel});
 	                    	mw.notify('Saved', {
 	                        	type: 'success'
