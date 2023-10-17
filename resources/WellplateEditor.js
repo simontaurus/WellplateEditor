@@ -5,37 +5,6 @@ REL: resources/WellplateEditor.js
 hint: ResourceLoader minifier does not ES6 yet, therefore skip minification  with "nomin" (see https://phabricator.wikimedia.org/T255556)
 */
 
-/*$(document).ready(function() {
-	if( $('.WellplateViewer').length === 0) return; //only on pages with a WellplateEditor-div
-	$('.WellplateViewer').each(function(i) {
-		var context = {};
-		context.targetElement = $(this);
-		context.targetPage = context.targetElement.text();
-		context.targetElement.text("");
-		context.targetElement.append( $( '<p><a href="/w/index.php?title=ELN/Editor/Wellplate&targetPage=' + context.targetPage + '">Open Editor</a></p>' ) );
-		$.getJSON("/w/api.php?action=query&prop=revisions&titles=" + context.targetPage + "&rvprop=content&formatversion=2&format=json", WellplateViewer_displayImage(context));	
-	});
-});
-
-var WellplateViewer_displayImage = function(context) {
-    return function(data) {
-			if (data.query.pages[0].hasOwnProperty("missing") && data.query.pages[0].missing === true) {
-				console.log("Page does not exist");
-		    }
-			else {
-				console.log("Page exists:");
-				console.log(data.query.pages[0].revisions[0].content);
-				var content = data.query.pages[0].revisions[0].content;
-				//wpe.loadPreview(content);
-				var loadedData;
-				try {loadedData = JSON.parse(content)} catch(error) { $(this).append( $("<p>Unable to load the layout. <i>" + error + "</i></p>")) }
-				console.log(loadedData);
-	    		console.log(loadedData[2][0].img);
-	    		context.targetElement.append( $( '<p><img src="'+loadedData[2][0].img+'"/></p>' ) );
-			}
-    };
-};*/
-
 $(document).ready(function() {
 	if( $('.WellplateEditor').length === 0) return; //only on pages with a WellplateEditor-div
 	//this doesn't work because classes like "Editor" loaded as module are not visible on global level (e.g. window.Editor)
@@ -44,7 +13,7 @@ $(document).ready(function() {
     //	var Editor = require( '.dist/editor.min.js' );
     //	Editor.init();
 	//} );
-	const resource_path = "/w/extensions/WellplateEditor/resources/";
+	const resource_path = mw.config.get("wgScriptPath") + "/extensions/WellplateEditor/resources/";
 	mw.loader.load( resource_path + "dist/ui-styles.css", 'text/css' );
 	mw.loader.load( resource_path + "dist/editor-styles.css", 'text/css' );
 	mw.loader.load( resource_path + "dist/shared-styles.css", 'text/css' );
@@ -83,8 +52,8 @@ $(document).ready(function() {
             const fileType = fileName.split('.')[fileName.split('.').length - 1];
             const fileDisplayName = config.file_label ? config.file_label : fileName.replace(fileType, "");
             const filePageName = "File:" + fileName;
-            const filePage = "/wiki/" + filePageName;
-            const fileUrl = "/wiki/Special:Redirect/file/" + fileName;
+            const filePage = mw.util.getUrl(filePageName);
+            const fileUrl = mw.util.getUrl("Special:Redirect/file/" + fileName);
             const options = {format: fileType, data: 'embedded'};
             
             $element.text("");
@@ -127,7 +96,7 @@ $(document).ready(function() {
             var svg = "";
             var dataString = "";
             //test if file exists
-            $.getJSON(`/w/api.php?action=query&prop=revisions&titles=${filePageName}&rvprop=content&formatversion=2&format=json`, function(data) {
+            $.getJSON(mw.config.get("wgScriptPath") + `/api.php?action=query&prop=revisions&titles=${filePageName}&rvprop=content&formatversion=2&format=json`, function(data) {
                 if (data.query.pages[0].hasOwnProperty("missing") && data.query.pages[0].missing === true) {
                     if (debug) console.log("File does not exist");
                     $(`#${editorName}-placeholder-${uid}`).show();
