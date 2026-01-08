@@ -179,7 +179,7 @@ $(document).ready(function() {
                 
                 if (file_exists) {
 	                var loadedData;
-					try {loadedData = JSON.parse(dataString)} catch(error) {wpe.Console.log({Message: "Unable to load the layout. <i>" + error + "</i>", Gravity: "Error"}); }
+					try {loadedData = JSON.parse(dataString);} catch(error) {wpe.Console.log({Message: "Unable to load the layout. <i>" + error + "</i>", Gravity: "Error"}); }
 					if (debug) console.log(loadedData);
 		    		var plate = loadedData[0];
 					var areas = loadedData[1];
@@ -274,7 +274,7 @@ function WellplateEditor_getData(wpe){
 		areas = "[";
 		var hasArea = false;
 		wpe.Tables.Areas.Array.forEach(function(a, index) { //Save the areas
-			if(index > 0) {areas += ","}
+			if(index > 0) {areas += ",";}
 			areas += Area.save(a);
 			hasArea = true;
 		});
@@ -317,7 +317,7 @@ function WellplateEditor_getSvg(wpe){
 			</div>
 		</foreignObject>
 		</g>
-	</svg>`
+	</svg>`;
 	return svg;
 }
 
@@ -363,7 +363,7 @@ function WellplateEditor_dataURItoBlob(dataURI) {
   var byteString = atob(dataURI.split(',')[1]);
 
   // separate out the mime component
-  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
 
   // write the bytes of the string to an ArrayBuffer
   var ab = new ArrayBuffer(byteString.length);
